@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.er.greentest.ViewActivity">
+
+    <com.er.greentest.view.CircleLoadingView
+        android:background="@color/colorAccent"
+        android:id="@+id/circle"
+        android:visibility="gone"
+        android:layout_width="300dp"
+        android:layout_height="200dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:id="@+id/progress"
+        android:text="progress"
+        android:visibility="visible"
+        android:layout_margin="5dp"
+        android:onClick="onMyViewClick"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:id="@+id/degree"
+        android:visibility="gone"
+        android:layout_margin="5dp"
+        android:onClick="onMyViewClick"
+        android:layout_height="wrap_content"/>
+
+    <com.er.greentest.view.LearnView
+        android:layout_width="300dp"
+        android:layout_margin="20dp"
+        android:id="@+id/learnView"
+        android:visibility="gone"
+        android:background="@color/colorPrimaryDark"
+        android:layout_height="300dp"/>
+
+    <com.er.greentest.view.MultitouchView
+        android:id="@+id/multiTouchView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_margin="20dp"
+        android:background="@color/colorPrimaryDark"
+        android:visibility="visible"/>
+
+    <com.er.greentest.view.SetPolyToPoly
+        android:id="@+id/poly"
+        android:layout_width="match_parent"
+        android:background="@color/txtGray"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"/>
+
+    <com.er.greentest.view.Practice11PieChartView
+        android:layout_marginLeft="10dp"
+        android:background="@color/colorPrimary"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.er.greentest.view.VelocityPanel
+        android:visibility="gone"
+        android:layout_width="300dp"
+        android:background="@color/colorAccent"
+        android:layout_height="300dp"/>
+
+    <com.er.greentest.view.CircleMeterView
+        android:layout_marginTop="20dp"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:visibility="gone"
+        android:background="@color/colorAccent"/>
+
+    <com.er.greentest.view.Controller
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:visibility="gone"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorHomeSearch"/>
+
+</LinearLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2010 (http://www.altova.com) by fengshuai (founder) -->
+<MuxerConfigRoot>
+    <Mux_Frame>
+        <MuxFrame_Item>
+            <MuxFrame_ID>0</MuxFrame_ID>
+            <Start_Time_Slot>0</Start_Time_Slot>
+            <Time_Slot_Num>1</Time_Slot_Num>
+            <RS_Rate>(240,240)</RS_Rate>
+            <Interleave_Mode>模式1</Interleave_Mode>
+            <LDPC_Rate>1/2</LDPC_Rate>
+            <Modulation_Type>BPSK</Modulation_Type>
+            <Scramble_Type>模式0</Scramble_Type>
+        </MuxFrame_Item>
+        <MuxFrame_Item>
+            <MuxFrame_ID>1</MuxFrame_ID>
+            <Start_Time_Slot>1</Start_Time_Slot>
+            <Time_Slot_Num>2</Time_Slot_Num>
+            <RS_Rate>(240,192)</RS_Rate>
+            <Interleave_Mode>模式1</Interleave_Mode>
+            <LDPC_Rate>1/2</LDPC_Rate>
+            <Modulation_Type>QPSK</Modulation_Type>
+            <Scramble_Type>模式0</Scramble_Type>
+        </MuxFrame_Item>
+    </Mux_Frame>
+    <Service_Config>
+        <ESG_Service>
+            <ESG_Service_Item>
+                <Service_ID>254</Service_ID>
+                <MuxFrame_ID>1</MuxFrame_ID>
+                <Encapsulation_Mode>模式2</Encapsulation_Mode>
+                <Service_Band>27648</Service_Band>
+                <IsScramble>false</IsScramble>
+            </ESG_Service_Item>
+        </ESG_Service>
+        <Media_Service>
+            <Media_Service_Item>
+                <Service_ID>701</Service_ID>
+                <MuxFrame_ID>10</MuxFrame_ID>
+                <Encapsulation_Mode>模式2</Encapsulation_Mode>
+                <Service_Band>6912</Service_Band>
+                <IsScramble>false</IsScramble>
+                <IP>224.12.34.56</IP>
+                <ECM_Port/>
+                <Video_Port>0</Video_Port>
+                <Audio_Port>55072</Audio_Port>
+                <Audio_CodecType>DRA</Audio_CodecType>
+                <Sampling_Rate>48</Sampling_Rate>
+            </Media_Service_Item>
+        </Media_Service>
+    </Service_Config>
+</MuxerConfigRoot>
