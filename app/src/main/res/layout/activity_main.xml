@@ -61,12 +61,26 @@
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/HG"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onBtnClick"
-        android:text="HG"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/HG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onBtnClick"
+            android:text="HG"/>
+
+        <Button
+            android:id="@+id/service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onBtnClick"
+            android:text="service"/>
+    </LinearLayout>
+
+
     <LinearLayout
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"

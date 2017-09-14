@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.View:
                 startActivity(new Intent(this, ViewActivity.class));
+            case R.id.service:
+                startActivity(new Intent(this, ServiceActivity.class));
                 break;
             case R.id.audio:
                 startActivity(new Intent(this, AudioActivity.class));
