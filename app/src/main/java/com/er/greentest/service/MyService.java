@@ -32,21 +32,22 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
         Log.w(TAG, "------------onCreate()");
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(1000);
-                        count++;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        thread.start();
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    try {
+//                        Thread.sleep(1000);
+//                        count++;
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
+//        thread.start();
     }
 
     public int getCount() {
@@ -54,8 +55,26 @@ public class MyService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, final int startId) {
         Log.w(TAG, "------------onStartCommand()");
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int count = 0;
+                while (count < 5*startId) {
+                    try {
+                        Thread.sleep(1000);
+                        Log.w(TAG, "------------"+Thread.currentThread().getName()+" count=" + count++);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+//                MyService.this.stopSelf();
+                stopSelf(startId);
+                Log.w(TAG, "------------stopSelf() startId " + startId);
+            }
+        }, "Thread id " + startId);
+        thread.start();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -71,6 +90,7 @@ public class MyService extends Service {
             }
         }
     }
+
 
     @Nullable
     @Override
