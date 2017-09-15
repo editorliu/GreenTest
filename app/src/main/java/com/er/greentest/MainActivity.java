@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         showView = ((TextView) findViewById(R.id.view));
+        Log.w("G", "test");
     }
 
     public static final String[] NAMES = {"张三", "李四", "王五", "赵六",};
