@@ -10,10 +10,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.er.greentest.entity.Desk;
-import com.er.greentest.entity.Phone;
+import com.er.greentest.dagger2.DaggerTestActivity;
+import com.er.greentest.entity.Computer;
 import com.er.greentest.entity.Road;
+import com.er.greentest.entity.Test;
 import com.er.greentest.entity.User;
+import com.er.greentest.gen.ComputerDao;
 import com.er.greentest.gen.DaoSession;
 import com.er.greentest.gen.RoadDao;
 import com.er.greentest.gen.UserDao;
@@ -21,7 +23,12 @@ import com.er.greentest.record.AudioActivity;
 import com.er.greentest.record.RecordActivity;
 import com.er.greentest.xmlparse.PullParse;
 
+import org.greenrobot.greendao.query.Query;
+import org.greenrobot.greendao.query.QueryBuilder;
+import org.greenrobot.greendao.query.WhereCondition;
+
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,6 +54,28 @@ public class MainActivity extends AppCompatActivity {
 
         showView = ((TextView) findViewById(R.id.view));
         Log.w("G", "test");
+
+
+        String intentLast = getIntent().getStringExtra("intentLast");
+        String intent = getIntent().getStringExtra("intent");
+        Log.w("MyService", "MainActivity intentLast=" + intentLast + "  inent=" + intent);
+
+
+        String s1 = "abc" + "d";
+        String s2 = "ab" + "cd";
+        Log.w("Sing", "s1:" + s1 + " " + s1.hashCode() + " s2:" + s2 + " " + s2.hashCode());
+
+        Test.Inner inner = new Test.Inner();
+
+
+        Test test = new Test();
+        Test.Inner2 inner2 = test.new Inner2();
+        String gender = inner2.gender;
+
+
+        Test test1 = new Test();
+        test1.hashSet();
+
     }
 
     public static final String[] NAMES = {"张三", "李四", "王五", "赵六",};
@@ -77,6 +106,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.View:
                 startActivity(new Intent(this, ViewActivity.class));
+                break;
+            case R.id.notificationActivity:
+                startActivity(new Intent(this, NotificationActivity.class));
+                break;
+            case R.id.dagger:
+                startActivity(new Intent(this, DaggerTestActivity.class));
+                break;
             case R.id.service:
                 startActivity(new Intent(this, ServiceActivity.class));
                 break;
@@ -89,19 +125,114 @@ public class MainActivity extends AppCompatActivity {
             case R.id.TP:
                 startActivity(new Intent(this, TakePictureActivity.class));
                 break;
+            case R.id.rx2:
+                startActivity(new Intent(this, RxActivity.class));
+                break;
             case R.id.HG:
                 startActivity(new Intent(this, HGActivity.class));
                 break;
             case R.id.add:
                 DaoSession daoSession = app.getDaoSession();
-                UserDao userDao = daoSession.getUserDao();
-                userDao.insert(new User(null, "网二码子3.0", 30));
-                Log.w("GR", "userDao:" + userDao);
-                daoSession.getDeskDao().insert(new Desk(null, 18, 30, 38));
-                daoSession.getRoadDao().insert(new Road(null, "朝阳北路"));
-                daoSession.getRoadDao().insert(new Road(null, "四惠东路"));
-                List<Phone> phones = daoSession.getPhoneDao().loadAll();
-                Log.w("GR", "phones:" + phones.size());
+//                UserDao userDao = daoSession.getUserDao();
+//                userDao.insert(new User(null, "网二码子3.0", 30));
+//                Log.w("GR", "userDao:" + userDao);
+//                daoSession.getDeskDao().insert(new Desk(null, 18, 30, 38));
+//                daoSession.getRoadDao().insert(new Road(null, "朝阳北路"));
+//                daoSession.getRoadDao().insert(new Road(null, "四惠东路"));
+//                List<Phone> phones = daoSession.getPhoneDao().loadAll();
+//                Log.w("GR", "phones:" + phones.size());
+//
+//                DeskDao deskDao = daoSession.getDeskDao();
+//                List<Desk> list = deskDao.queryBuilder()
+//                        .where(DeskDao.Properties.Height.eq(11))
+//                        .list();
+//
+//
+//                QueryBuilder<Desk> deskQueryBuilder = deskDao.queryBuilder();
+//                deskQueryBuilder.where(DeskDao.Properties.Length.gt(10),
+//                        deskQueryBuilder.or(DeskDao.Properties.Id.between(20,25),DeskDao.Properties.Height.lt(18))
+//                );
+//                List<Desk> list1 = deskQueryBuilder.limit(10).orderAsc(DeskDao.Properties.Id).list();
+
+
+                ComputerDao computerDao = daoSession.getComputerDao();
+
+                computerDao.insert(new Computer(null, "联想", 180.9080, new Date()));
+                computerDao.insert(new Computer(null, "华为", 98.76, new Date()));
+                computerDao.insert(new Computer(null, "魅族", 35.90, new Date()));
+                computerDao.insert(new Computer(null, "小米", 15d, new Date()));
+
+                //事务
+                computerDao.insertInTx(new Computer(null,"",277d,new Date()));
+                computerDao.deleteInTx();
+                computerDao.updateInTx();
+
+
+//                List<Computer> list = computerDao.queryBuilder().list();
+//                StringBuilder stringBuilder = new StringBuilder();
+//                for (int i = 0; i < list.size(); i++) {
+//                    Computer computer = list.get(i);
+//                    stringBuilder.append(i + ":" + computer + " " + computer.getId() + " " + computer.getPrice() + " " + computer.getBrand() + " " + computer.getDate());
+//                    stringBuilder.append("\n");
+//                }
+//                Log.w("DATA", stringBuilder.toString());
+
+
+
+//                Log.w("DATA", ComputerDao.Properties.Brand.columnName+"\n");
+//                Log.w("DATA", ComputerDao.Properties.Brand.name+"\n");
+//                Log.w("DATA", ComputerDao.Properties.Brand.primaryKey+"\n");
+//                Log.w("DATA", ComputerDao.Properties.Brand.ordinal+"\n");
+
+
+                QueryBuilder.LOG_SQL = true;
+                QueryBuilder.LOG_VALUES = true;
+
+                ComputerDao computerDao1 = daoSession.getComputerDao();
+                QueryBuilder<Computer> computerQueryBuilder = computerDao1.queryBuilder();
+//                computerQueryBuilder.where(ComputerDao.Properties.Brand.eq("联想"));
+//                Query<Computer> query = computerQueryBuilder.build();
+//
+//                query.forCurrentThread();
+//                query.setParameter(0, "华为");
+//                List<Computer> list = query.list();
+//                for (int i = 0; i < list.size(); i++) {
+//                    Log.w("DATA", list.get(i).getBrand());
+//                }
+
+//                String sql = "select * from "+ComputerDao.TABLENAME;
+                String sql = ComputerDao.Properties.Brand.columnName+" = \"联想\"";
+                computerQueryBuilder.where(new WhereCondition.StringCondition(sql));
+                Query<Computer> build = computerQueryBuilder.build();
+                List<Computer> list1 = build.list();
+//                List<Computer> list1 = computerQueryBuilder.list();
+                for (int i = 0; i < list1.size(); i++) {
+                    Log.w("DATA", list1.get(i).getBrand());
+                }
+
+
+
+                computerDao1.queryRaw("", "");
+                Query<Computer> query = computerDao1.queryRawCreate("", "");
+
+//                Computer unique = query.unique();
+//                List<Computer> list = query.list();
+//
+//                LazyList<Computer> computers = query.listLazy();
+//                computers.close();
+//
+//                CloseableListIterator<Computer> computerCloseableListIterator = query.listIterator();
+//                try {
+//                    computerCloseableListIterator.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+
+
+
+
+
+
 
                 break;
             case R.id.query:

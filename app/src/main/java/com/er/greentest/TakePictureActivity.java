@@ -263,7 +263,7 @@ public class TakePictureActivity extends AppCompatActivity {
                 / height);
 
         // Decode the image file into a Bitmap sized to fill the
-        // View
+        // ViewUI
         factoryOptions.inJustDecodeBounds = false;
         factoryOptions.inSampleSize = scaleFactor;
         factoryOptions.inPurgeable = true;

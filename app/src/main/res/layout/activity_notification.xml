@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.er.greentest.NotificationActivity"
+    android:weightSum="1">
+
+
+    <Button
+        android:onClick="onMyNotificationClick"
+        android:id="@+id/sendNotify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送通知" />
+
+    <Button
+        android:onClick="onMyNotificationClick"
+        android:id="@+id/cancelNotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="取消通知" />
+
+    <Button
+        android:onClick="onMyNotificationClick"
+        android:id="@+id/notifyAction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送附带Action的通知" />
+</LinearLayout>

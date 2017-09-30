@@ -3,4 +3,5 @@
     <string name="homeSearch">检索</string>
     <string name="homePrimarySearch">高级检索</string>
     <string name="homeEditHint">请输入关键词</string>
+    <string name="title_activity_dagger">DaggerActivity</string>
 </resources>

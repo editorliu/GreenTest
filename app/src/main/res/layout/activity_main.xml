@@ -78,6 +78,13 @@
             android:layout_height="wrap_content"
             android:onClick="onBtnClick"
             android:text="service"/>
+
+        <Button
+            android:id="@+id/notificationActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onBtnClick"
+            android:text="notification" />
     </LinearLayout>
 
 
@@ -98,6 +105,27 @@
             android:layout_height="wrap_content"
             android:text="query"
             android:onClick="onBtnClick"/>
+
+        <Button
+            android:id="@+id/rx2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="rx2"
+            android:onClick="onBtnClick"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/dagger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onBtnClick"
+            android:text="dagger" />
     </LinearLayout>
 
 

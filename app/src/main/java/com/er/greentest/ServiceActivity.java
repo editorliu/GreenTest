@@ -34,7 +34,12 @@ public class ServiceActivity extends AppCompatActivity {
                 stopService(stopIntent);
                 break;
             case R.id.button3://bindService
-                bindService(new Intent(this, MyService.class), conn, Service.BIND_AUTO_CREATE);
+                try {
+                    bindService(new Intent(this, MyService.class), conn, Service.BIND_AUTO_CREATE);
+                } catch (Exception e) {
+                    Log.w(MyService.TAG, "------------+++++++++++++++++++++bindService exception");
+                    e.printStackTrace();
+                }
                 break;
             case R.id.button4:
 //                if (myService != null) {

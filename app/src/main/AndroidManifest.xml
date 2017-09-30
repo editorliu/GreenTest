@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.er.greentest">
+    package="com.er.greentest">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name=".BaseApplication"
@@ -23,34 +23,44 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/path_fp"/>
+                android:resource="@xml/path_fp" />
         </provider>
 
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HGActivity">
+        <activity
+            android:name=".HGActivity"
+            android:parentActivityName=".NotificationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".NotificationActivity" />
         </activity>
-        <activity android:name=".ExpandActivity">
-        </activity>
-        <activity android:name=".TakePictureActivity">
-        </activity>
-        <activity android:name=".record.RecordActivity">
-        </activity>
-        <activity android:name=".record.AudioActivity">
-        </activity>
-        <activity android:name=".ViewActivity">
-        </activity>
-        <activity android:name=".ServiceActivity">
-        </activity>
+        <activity android:name=".ExpandActivity" />
+        <activity android:name=".TakePictureActivity" />
+        <activity android:name=".record.RecordActivity" />
+        <activity android:name=".record.AudioActivity" />
+        <activity android:name=".ViewActivity" />
+        <activity android:name=".ServiceActivity" />
 
-        <!--<service android:name=".service.MyService" android:process=":remote" />-->
+        <!-- <service android:name=".service.MyService" android:process=":remote" /> -->
         <service android:name=".service.MyService" />
-        <service android:name=".service.MyIntentService"/>
+        <service android:name=".service.MyIntentService" />
+
+        <activity
+            android:name=".NotificationActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".RxActivity" />
+        <activity android:name=".dagger2.DaggerTestActivity" />
+        <activity android:name=".dagger2.SecondActivity"></activity>
     </application>
 
 </manifest>

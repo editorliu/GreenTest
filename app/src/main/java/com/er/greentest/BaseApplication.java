@@ -2,6 +2,9 @@ package com.er.greentest;
 
 import android.app.Application;
 
+import com.er.greentest.dagger2.ApplicationComponent;
+import com.er.greentest.dagger2.ApplicationModule;
+import com.er.greentest.dagger2.DaggerApplicationComponent;
 import com.er.greentest.gen.DaoMaster;
 import com.er.greentest.gen.DaoSession;
 
@@ -15,6 +18,8 @@ public class BaseApplication extends Application {
     public static final String DB_NAME = "users-db";
     private DaoSession daoSession;
 
+    private ApplicationComponent applicationComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -23,6 +28,15 @@ public class BaseApplication extends Application {
 
         DaoMaster daoMaster = new DaoMaster(writableDb);
         daoSession = daoMaster.newSession();
+
+        applicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule(this))
+                .build();
+
+    }
+
+    public ApplicationComponent getApplicationComponent() {
+        return applicationComponent;
     }
 
     public DaoSession getDaoSession() {

@@ -1,8 +1,12 @@
 package com.er.greentest.service;
 
-import android.app.IntentService;
+import android.app.Service;
 import android.content.Intent;
-import android.support.annotation.Nullable;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.widget.Toast;
 
 /**
  * Created by Administrator on 2017/9/14.
@@ -10,28 +14,38 @@ import android.support.annotation.Nullable;
  * Version：
  */
 
-public class MyIntentService extends IntentService {
+public class MyIntentService extends Service {
+    /** Command to the service to display a message */
+    static final int MSG_SAY_HELLO = 1;
+
     /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
+     * Handler of incoming messages from clients.
      */
-    public MyIntentService(String name) {
-        super(name);
+    class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_SAY_HELLO:
+                    Toast.makeText(getApplicationContext(), "hello!", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
     }
 
-    public MyIntentService() {
-        this("MyIntentService");
-    }
+    /**
+     * Target we publish for clients to send messages to IncomingHandler.
+     */
+    final Messenger mMessenger = new Messenger(new IncomingHandler());
 
+    /**
+     * When binding to the service, we return an interface to our messenger
+     * for sending messages to the service.
+     */
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-
-    }
-
-    @Override
-    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-
-        return super.onStartCommand(intent, flags, startId);
+    public IBinder onBind(Intent intent) {
+        Toast.makeText(getApplicationContext(), "binding", Toast.LENGTH_SHORT).show();
+        return mMessenger.getBinder();
     }
 }
