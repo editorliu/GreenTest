@@ -5,6 +5,7 @@ import android.app.Application;
 import com.er.greentest.dagger2.ApplicationComponent;
 import com.er.greentest.dagger2.ApplicationModule;
 import com.er.greentest.dagger2.DaggerApplicationComponent;
+import com.er.greentest.entity.upgrade.MyOpenHelper;
 import com.er.greentest.gen.DaoMaster;
 import com.er.greentest.gen.DaoSession;
 
@@ -23,8 +24,11 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(this, DB_NAME);
-        Database writableDb = devOpenHelper.getWritableDb();
+//        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(this, DB_NAME);
+//        Database writableDb = devOpenHelper.getWritableDb();
+
+        MyOpenHelper myOpenHelper = new MyOpenHelper(this, DB_NAME);
+        Database writableDb = myOpenHelper.getWritableDb();
 
         DaoMaster daoMaster = new DaoMaster(writableDb);
         daoSession = daoMaster.newSession();

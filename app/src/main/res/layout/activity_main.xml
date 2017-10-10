@@ -126,6 +126,20 @@
             android:layout_height="wrap_content"
             android:onClick="onBtnClick"
             android:text="dagger" />
+
+        <Button
+            android:id="@+id/toOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="to-One"
+            android:onClick="onBtnClick"/>
+
+        <Button
+            android:id="@+id/toMany"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="to-many"
+            android:onClick="onBtnClick"/>
     </LinearLayout>
 
 

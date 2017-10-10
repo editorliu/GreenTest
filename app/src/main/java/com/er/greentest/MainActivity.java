@@ -15,14 +15,23 @@ import com.er.greentest.entity.Computer;
 import com.er.greentest.entity.Road;
 import com.er.greentest.entity.Test;
 import com.er.greentest.entity.User;
+import com.er.greentest.entity.one.Score;
+import com.er.greentest.entity.one.Student;
+import com.er.greentest.entity.tomany.Customer;
+import com.er.greentest.entity.tomany.CustomerOrder;
 import com.er.greentest.gen.ComputerDao;
+import com.er.greentest.gen.CustomerDao;
+import com.er.greentest.gen.CustomerOrderDao;
 import com.er.greentest.gen.DaoSession;
 import com.er.greentest.gen.RoadDao;
+import com.er.greentest.gen.ScoreDao;
+import com.er.greentest.gen.StudentDao;
 import com.er.greentest.gen.UserDao;
 import com.er.greentest.record.AudioActivity;
 import com.er.greentest.record.RecordActivity;
 import com.er.greentest.xmlparse.PullParse;
 
+import org.greenrobot.greendao.query.LazyList;
 import org.greenrobot.greendao.query.Query;
 import org.greenrobot.greendao.query.QueryBuilder;
 import org.greenrobot.greendao.query.WhereCondition;
@@ -131,6 +140,79 @@ public class MainActivity extends AppCompatActivity {
             case R.id.HG:
                 startActivity(new Intent(this, HGActivity.class));
                 break;
+            case R.id.toMany:
+
+                DaoSession daoSession2 = app.getDaoSession();
+
+                CustomerDao customerDao = daoSession2.getCustomerDao();
+                Customer customer1 = new Customer(null, "张三");
+                Customer customer2 = new Customer(null, "李四");
+                Customer customer3 = new Customer(null, "王五");
+                Customer customer4 = new Customer(null, "赵六");
+                Customer customer5 = new Customer(null, "周七");
+//                customerDao.insertInTx(customer1, customer2, customer3, customer4, customer5);
+
+                List<Customer> listCustomer = customerDao.queryBuilder().list();
+                for (Customer customer : listCustomer) {
+                    customer.resetCustomerOrderList();
+                    Log.w("customer", "---------------customer:" +customer.getId()+" "+customer.getName());
+                    List<CustomerOrder> customerOrderList = customer.getCustomerOrderList();
+                    for (int i = 0; i < customerOrderList.size(); i++) {
+                        Log.w("customer", "---------------customer order:"+ customerOrderList.get(i).getItemName());
+                    }
+                }
+
+                CustomerOrderDao customerOrderDao = daoSession2.getCustomerOrderDao();
+                CustomerOrder order1 = new CustomerOrder(null, "苹果", 1);
+                CustomerOrder order2 = new CustomerOrder(null, "猕猴桃", 1);
+                CustomerOrder order3 = new CustomerOrder(null, "香蕉", 2);
+                CustomerOrder order4 = new CustomerOrder(null, "橘子", 3);
+                CustomerOrder order5 = new CustomerOrder(null, "苹果", 4);
+                CustomerOrder order6 = new CustomerOrder(null, "柚子", 5);
+                CustomerOrder order7 = new CustomerOrder(null, "葡萄", 5);
+                CustomerOrder order8 = new CustomerOrder(null, "樱桃", 5);
+//                customerOrderDao.insertInTx(order1,order2,order3,order4,order5,order6,order7,order8);
+//                List<CustomerOrder> listCustomerOrder = customerOrderDao.queryBuilder().list();
+//                for(CustomerOrder customerOrder : listCustomerOrder){
+//                    Log.w("customer", "---------------customerOrder:"+ customerOrder.getItemName()+"***************");
+//                }
+
+                break;
+            case R.id.toOne:
+                DaoSession daoSession1 = app.getDaoSession();
+                Student a = new Student(null, "a", 16, 1);
+                Student b = new Student(null, "b", 15, 3);
+                Student c = new Student(null, "c", 18, 2);
+                Student d = new Student(null, "d", 15, 5);
+                Student e = new Student(null, "e", 17, 4);
+
+
+                Student test = new Student(null, "e", 19, 4);
+
+                StudentDao studentDao = daoSession1.getStudentDao();
+//                studentDao.insertInTx(a,b,c,d,e);
+//                studentDao.insert(test);
+                List<Student> listStudent = studentDao.queryBuilder().list();
+
+                for (int i = 0; i < listStudent.size(); i++) {
+                    Student student = listStudent.get(i);
+                    Log.w("score", "---------------student:" + student.getScore() + "  " + student.getScore().getId() + " " + student.getScore().getPoint());
+                }
+
+                Score score1 = new Score(null, 70);
+                Score score2 = new Score(null, 85);
+                Score score3 = new Score(null, 100);
+                Score score4 = new Score(null, 99);
+                Score score5 = new Score(null, 100);
+                ScoreDao scoreDao = daoSession1.getScoreDao();
+//                scoreDao.insertInTx(score1,score2,score3,score4,score5);
+
+                List<Score> listScore = scoreDao.queryBuilder().list();
+                for (int i = 0; i < listScore.size(); i++) {
+                    Log.w("score", "---------------score:" + listScore.get(i).getId());
+                }
+
+                break;
             case R.id.add:
                 DaoSession daoSession = app.getDaoSession();
 //                UserDao userDao = daoSession.getUserDao();
@@ -163,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
                 computerDao.insert(new Computer(null, "小米", 15d, new Date()));
 
                 //事务
-                computerDao.insertInTx(new Computer(null,"",277d,new Date()));
+                computerDao.insertInTx(new Computer(null, "", 277d, new Date()));
                 computerDao.deleteInTx();
                 computerDao.updateInTx();
 
@@ -176,7 +258,6 @@ public class MainActivity extends AppCompatActivity {
 //                    stringBuilder.append("\n");
 //                }
 //                Log.w("DATA", stringBuilder.toString());
-
 
 
 //                Log.w("DATA", ComputerDao.Properties.Brand.columnName+"\n");
@@ -201,8 +282,12 @@ public class MainActivity extends AppCompatActivity {
 //                }
 
 //                String sql = "select * from "+ComputerDao.TABLENAME;
-                String sql = ComputerDao.Properties.Brand.columnName+" = \"联想\"";
+                String sql = ComputerDao.Properties.Brand.columnName + " = \"联想\"";
                 computerQueryBuilder.where(new WhereCondition.StringCondition(sql));
+//                computerQueryBuilder.unique()
+                LazyList<Computer> computers = computerQueryBuilder.listLazy();
+                computers.close();
+
                 Query<Computer> build = computerQueryBuilder.build();
                 List<Computer> list1 = build.list();
 //                List<Computer> list1 = computerQueryBuilder.list();
@@ -210,10 +295,19 @@ public class MainActivity extends AppCompatActivity {
                     Log.w("DATA", list1.get(i).getBrand());
                 }
 
+                computerDao1.queryBuilder().where(ComputerDao.Properties.Brand.gt(""))
+                        .orderDesc(ComputerDao.Properties.Brand)
+                        .limit(10)
+                        .offset(2)
+                        .list();
 
+//                去除缓存
+//                daoSession.clear();
+//                daoSession.getComputerDao().detach(new Computer());
+//                daoSession.getComputerDao().detachAll();
 
                 computerDao1.queryRaw("", "");
-                Query<Computer> query = computerDao1.queryRawCreate("", "");
+                Query<Computer> query = computerDao1.queryRawCreate("where", "p1", "p2", "p3");
 
 //                Computer unique = query.unique();
 //                List<Computer> list = query.list();
@@ -227,11 +321,6 @@ public class MainActivity extends AppCompatActivity {
 //                } catch (IOException e) {
 //                    e.printStackTrace();
 //                }
-
-
-
-
-
 
 
                 break;
