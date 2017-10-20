@@ -7,10 +7,33 @@
     android:orientation="vertical"
     tools:context="com.er.greentest.MainActivity">
 
+    <com.er.greentest.view.MultiView
+        android:layout_width="300dp"
+        android:background="@color/colorPrimary"
+        android:visibility="visible"
+        android:layout_height="400dp" />
+
+    <com.er.greentest.view.Blank
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:background="@color/colorPrimary"
+        android:visibility="gone" />
     <TextView
         android:id="@+id/version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <com.er.greentest.view.CircleStartView
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_height="wrap_content" />
+
+
+
+    <com.er.greentest.view.PathView
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -134,15 +157,27 @@
             android:text="to-One"
             android:onClick="onBtnClick"/>
 
-        <Button
-            android:id="@+id/toMany"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="to-many"
-            android:onClick="onBtnClick"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/scrollTest"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:layout_height="200dp">
 
+        <View
+            android:layout_width="80dp"
+            android:background="@color/txtGray"
+            android:layout_height="80dp" />
+
+        <View
+            android:layout_width="80dp"
+            android:layout_margin="20dp"
+            android:background="@color/txtGray"
+            android:layout_height="80dp" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/view"

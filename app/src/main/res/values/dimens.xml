@@ -3,4 +3,5 @@
     <dimen name="txt21">21sp</dimen>
     <dimen name="txt19">19sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="scroll">16dp</dimen>
 </resources>

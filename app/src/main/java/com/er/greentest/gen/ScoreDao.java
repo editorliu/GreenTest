@@ -1,13 +1,18 @@
 package com.er.greentest.gen;
 
+import java.util.List;
+import java.util.ArrayList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 
 import org.greenrobot.greendao.AbstractDao;
 import org.greenrobot.greendao.Property;
+import org.greenrobot.greendao.internal.SqlUtils;
 import org.greenrobot.greendao.internal.DaoConfig;
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.database.DatabaseStatement;
+
+import com.er.greentest.entity.one.Student;
 
 import com.er.greentest.entity.one.Score;
 
@@ -26,7 +31,10 @@ public class ScoreDao extends AbstractDao<Score, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Point = new Property(1, int.class, "point", false, "POINT");
+        public final static Property StudentId = new Property(2, long.class, "studentId", false, "STUDENT_ID");
     }
+
+    private DaoSession daoSession;
 
 
     public ScoreDao(DaoConfig config) {
@@ -35,6 +43,7 @@ public class ScoreDao extends AbstractDao<Score, Long> {
     
     public ScoreDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -42,7 +51,8 @@ public class ScoreDao extends AbstractDao<Score, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"SCORE\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"POINT\" INTEGER NOT NULL );"); // 1: point
+                "\"POINT\" INTEGER NOT NULL ," + // 1: point
+                "\"STUDENT_ID\" INTEGER NOT NULL );"); // 2: studentId
     }
 
     /** Drops the underlying database table. */
@@ -60,6 +70,7 @@ public class ScoreDao extends AbstractDao<Score, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindLong(2, entity.getPoint());
+        stmt.bindLong(3, entity.getStudentId());
     }
 
     @Override
@@ -71,6 +82,13 @@ public class ScoreDao extends AbstractDao<Score, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindLong(2, entity.getPoint());
+        stmt.bindLong(3, entity.getStudentId());
+    }
+
+    @Override
+    protected final void attachEntity(Score entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     @Override
@@ -82,7 +100,8 @@ public class ScoreDao extends AbstractDao<Score, Long> {
     public Score readEntity(Cursor cursor, int offset) {
         Score entity = new Score( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getInt(offset + 1) // point
+            cursor.getInt(offset + 1), // point
+            cursor.getLong(offset + 2) // studentId
         );
         return entity;
     }
@@ -91,6 +110,7 @@ public class ScoreDao extends AbstractDao<Score, Long> {
     public void readEntity(Cursor cursor, Score entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setPoint(cursor.getInt(offset + 1));
+        entity.setStudentId(cursor.getLong(offset + 2));
      }
     
     @Override
@@ -118,4 +138,97 @@ public class ScoreDao extends AbstractDao<Score, Long> {
         return true;
     }
     
+    private String selectDeep;
+
+    protected String getSelectDeep() {
+        if (selectDeep == null) {
+            StringBuilder builder = new StringBuilder("SELECT ");
+            SqlUtils.appendColumns(builder, "T", getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T0", daoSession.getStudentDao().getAllColumns());
+            builder.append(" FROM SCORE T");
+            builder.append(" LEFT JOIN STUDENT T0 ON T.\"STUDENT_ID\"=T0.\"_id\"");
+            builder.append(' ');
+            selectDeep = builder.toString();
+        }
+        return selectDeep;
+    }
+    
+    protected Score loadCurrentDeep(Cursor cursor, boolean lock) {
+        Score entity = loadCurrent(cursor, 0, lock);
+        int offset = getAllColumns().length;
+
+        Student student = loadCurrentOther(daoSession.getStudentDao(), cursor, offset);
+         if(student != null) {
+            entity.setStudent(student);
+        }
+
+        return entity;    
+    }
+
+    public Score loadDeep(Long key) {
+        assertSinglePk();
+        if (key == null) {
+            return null;
+        }
+
+        StringBuilder builder = new StringBuilder(getSelectDeep());
+        builder.append("WHERE ");
+        SqlUtils.appendColumnsEqValue(builder, "T", getPkColumns());
+        String sql = builder.toString();
+        
+        String[] keyArray = new String[] { key.toString() };
+        Cursor cursor = db.rawQuery(sql, keyArray);
+        
+        try {
+            boolean available = cursor.moveToFirst();
+            if (!available) {
+                return null;
+            } else if (!cursor.isLast()) {
+                throw new IllegalStateException("Expected unique result, but count was " + cursor.getCount());
+            }
+            return loadCurrentDeep(cursor, true);
+        } finally {
+            cursor.close();
+        }
+    }
+    
+    /** Reads all available rows from the given cursor and returns a list of new ImageTO objects. */
+    public List<Score> loadAllDeepFromCursor(Cursor cursor) {
+        int count = cursor.getCount();
+        List<Score> list = new ArrayList<Score>(count);
+        
+        if (cursor.moveToFirst()) {
+            if (identityScope != null) {
+                identityScope.lock();
+                identityScope.reserveRoom(count);
+            }
+            try {
+                do {
+                    list.add(loadCurrentDeep(cursor, false));
+                } while (cursor.moveToNext());
+            } finally {
+                if (identityScope != null) {
+                    identityScope.unlock();
+                }
+            }
+        }
+        return list;
+    }
+    
+    protected List<Score> loadDeepAllAndCloseCursor(Cursor cursor) {
+        try {
+            return loadAllDeepFromCursor(cursor);
+        } finally {
+            cursor.close();
+        }
+    }
+    
+
+    /** A raw-style query where you can pass any WHERE clause and arguments. */
+    public List<Score> queryDeep(String where, String... selectionArg) {
+        Cursor cursor = db.rawQuery(getSelectDeep() + where, selectionArg);
+        return loadDeepAllAndCloseCursor(cursor);
+    }
+ 
 }

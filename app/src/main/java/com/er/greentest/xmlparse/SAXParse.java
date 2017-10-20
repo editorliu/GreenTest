@@ -6,16 +6,15 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 /**
  * Created by Administrator on 2017/8/11.
+ *
  */
 
 public class SAXParse {
@@ -30,16 +29,12 @@ public class SAXParse {
                 Book book = books.get(i);
                 Log.i("XML_SAX", "book:"+book.getId()+"  "+book.getName()+"  "+book.getPrice());
             }
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-    class MyHandler extends DefaultHandler {
+    private class MyHandler extends DefaultHandler {
         private ArrayList<Book> mList = new ArrayList<>();
         private Book book;
         private StringBuffer stringBuffer = new StringBuffer();

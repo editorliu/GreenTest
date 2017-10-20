@@ -26,9 +26,9 @@ public class CustomerDao extends AbstractDao<Customer, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Name = new Property(1, String.class, "name", false, "NAME");
+        public final static Property Type = new Property(2, int.class, "type", false, "TYPE");
+        public final static Property Address = new Property(3, String.class, "address", false, "ADDRESS");
     }
-
-    private DaoSession daoSession;
 
 
     public CustomerDao(DaoConfig config) {
@@ -37,7 +37,6 @@ public class CustomerDao extends AbstractDao<Customer, Long> {
     
     public CustomerDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
-        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -45,7 +44,9 @@ public class CustomerDao extends AbstractDao<Customer, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CUSTOMER\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"NAME\" TEXT);"); // 1: name
+                "\"NAME\" TEXT," + // 1: name
+                "\"TYPE\" INTEGER NOT NULL ," + // 2: type
+                "\"ADDRESS\" TEXT);"); // 3: address
     }
 
     /** Drops the underlying database table. */
@@ -67,6 +68,12 @@ public class CustomerDao extends AbstractDao<Customer, Long> {
         if (name != null) {
             stmt.bindString(2, name);
         }
+        stmt.bindLong(3, entity.getType());
+ 
+        String address = entity.getAddress();
+        if (address != null) {
+            stmt.bindString(4, address);
+        }
     }
 
     @Override
@@ -82,12 +89,12 @@ public class CustomerDao extends AbstractDao<Customer, Long> {
         if (name != null) {
             stmt.bindString(2, name);
         }
-    }
-
-    @Override
-    protected final void attachEntity(Customer entity) {
-        super.attachEntity(entity);
-        entity.__setDaoSession(daoSession);
+        stmt.bindLong(3, entity.getType());
+ 
+        String address = entity.getAddress();
+        if (address != null) {
+            stmt.bindString(4, address);
+        }
     }
 
     @Override
@@ -99,7 +106,9 @@ public class CustomerDao extends AbstractDao<Customer, Long> {
     public Customer readEntity(Cursor cursor, int offset) {
         Customer entity = new Customer( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1) // name
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
+            cursor.getInt(offset + 2), // type
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // address
         );
         return entity;
     }
@@ -108,6 +117,8 @@ public class CustomerDao extends AbstractDao<Customer, Long> {
     public void readEntity(Cursor cursor, Customer entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setType(cursor.getInt(offset + 2));
+        entity.setAddress(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
      }
     
     @Override

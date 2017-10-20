@@ -21,15 +21,20 @@ public class BaseApplication extends Application {
 
     private ApplicationComponent applicationComponent;
 
+    private static Application app;
+
     @Override
     public void onCreate() {
         super.onCreate();
 //        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(this, DB_NAME);
 //        Database writableDb = devOpenHelper.getWritableDb();
 
+        app = this;
+
+
         MyOpenHelper myOpenHelper = new MyOpenHelper(this, DB_NAME);
         Database writableDb = myOpenHelper.getWritableDb();
-
+//        Database writableDb = myOpenHelper.getEncryptedReadableDb("password");
         DaoMaster daoMaster = new DaoMaster(writableDb);
         daoSession = daoMaster.newSession();
 
@@ -37,6 +42,13 @@ public class BaseApplication extends Application {
                 .applicationModule(new ApplicationModule(this))
                 .build();
 
+
+
+
+    }
+
+    public static Application getApp(){
+        return app;
     }
 
     public ApplicationComponent getApplicationComponent() {

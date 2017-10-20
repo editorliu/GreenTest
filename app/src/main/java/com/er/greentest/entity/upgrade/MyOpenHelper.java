@@ -4,9 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.er.greentest.gen.CustomerDao;
-import com.er.greentest.gen.CustomerOrderDao;
 import com.er.greentest.gen.DaoMaster;
+import com.er.greentest.gen.DeskDao;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -35,6 +34,6 @@ public class MyOpenHelper extends DaoMaster.OpenHelper {
     public void onUpgrade(Database db, int oldVersion, int newVersion) {
         Log.i("greenDAO", "Upgrading old:" + oldVersion + " new:" + newVersion);
         super.onUpgrade(db, oldVersion, newVersion);
-        MigrationHelper.getInstance().migrate(db, CustomerDao.class, CustomerOrderDao.class);
+        MigrationHelper.getInstance().migrate(db, DeskDao.class);
     }
 }

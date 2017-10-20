@@ -1,8 +1,8 @@
-package com.er.greentest.entity.one;
+package com.er.greentest.entity.join;
 
+import com.er.greentest.gen.CompanyDao;
 import com.er.greentest.gen.DaoSession;
-import com.er.greentest.gen.ScoreDao;
-import com.er.greentest.gen.StudentDao;
+import com.er.greentest.gen.StaffDao;
 
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
@@ -11,32 +11,38 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToOne;
 
+import java.util.Date;
+
 /**
- * Created by THTF on 2017/10/9.
+ * Created by THTF on 2017/10/16.
  * Desc:
  */
 @Entity
-public class Score {
+public class Staff {
     @Id
     private Long id;
-    private int point;
-    private long studentId;
-    @ToOne(joinProperty = "studentId")
-    private Student student;
+    private String name;
+    private String position;
+    private Date date;
+    private long companyId;
+    @ToOne(joinProperty = "companyId")
+    private Company company;
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
     /** Used for active entity operations. */
-    @Generated(hash = 302717168)
-    private transient ScoreDao myDao;
-    @Generated(hash = 690830948)
-    public Score(Long id, int point, long studentId) {
+    @Generated(hash = 1940714421)
+    private transient StaffDao myDao;
+    @Generated(hash = 780600429)
+    public Staff(Long id, String name, String position, Date date, long companyId) {
         this.id = id;
-        this.point = point;
-        this.studentId = studentId;
+        this.name = name;
+        this.position = position;
+        this.date = date;
+        this.companyId = companyId;
     }
-    @Generated(hash = 226049941)
-    public Score() {
+    @Generated(hash = 1774984890)
+    public Staff() {
     }
     public Long getId() {
         return this.id;
@@ -44,49 +50,61 @@ public class Score {
     public void setId(Long id) {
         this.id = id;
     }
-    public int getPoint() {
-        return this.point;
+    public String getName() {
+        return this.name;
     }
-    public void setPoint(int point) {
-        this.point = point;
+    public void setName(String name) {
+        this.name = name;
     }
-    public long getStudentId() {
-        return this.studentId;
+    public String getPosition() {
+        return this.position;
     }
-    public void setStudentId(long studentId) {
-        this.studentId = studentId;
+    public void setPosition(String position) {
+        this.position = position;
     }
-    @Generated(hash = 79695740)
-    private transient Long student__resolvedKey;
+    public Date getDate() {
+        return this.date;
+    }
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    public long getCompanyId() {
+        return this.companyId;
+    }
+    public void setCompanyId(long companyId) {
+        this.companyId = companyId;
+    }
+    @Generated(hash = 1496811699)
+    private transient Long company__resolvedKey;
     /** To-one relationship, resolved on first access. */
-    @Generated(hash = 1299365531)
-    public Student getStudent() {
-        long __key = this.studentId;
-        if (student__resolvedKey == null || !student__resolvedKey.equals(__key)) {
+    @Generated(hash = 1266421621)
+    public Company getCompany() {
+        long __key = this.companyId;
+        if (company__resolvedKey == null || !company__resolvedKey.equals(__key)) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            StudentDao targetDao = daoSession.getStudentDao();
-            Student studentNew = targetDao.load(__key);
+            CompanyDao targetDao = daoSession.getCompanyDao();
+            Company companyNew = targetDao.load(__key);
             synchronized (this) {
-                student = studentNew;
-                student__resolvedKey = __key;
+                company = companyNew;
+                company__resolvedKey = __key;
             }
         }
-        return student;
+        return company;
     }
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 1384923540)
-    public void setStudent(@NotNull Student student) {
-        if (student == null) {
+    @Generated(hash = 474861392)
+    public void setCompany(@NotNull Company company) {
+        if (company == null) {
             throw new DaoException(
-                    "To-one property 'studentId' has not-null constraint; cannot set to-one to null");
+                    "To-one property 'companyId' has not-null constraint; cannot set to-one to null");
         }
         synchronized (this) {
-            this.student = student;
-            studentId = student.getId();
-            student__resolvedKey = studentId;
+            this.company = company;
+            companyId = company.getId();
+            company__resolvedKey = companyId;
         }
     }
     /**
@@ -123,9 +141,10 @@ public class Score {
         myDao.update(this);
     }
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 339145390)
+    @Generated(hash = 1573905378)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getScoreDao() : null;
+        myDao = daoSession != null ? daoSession.getStaffDao() : null;
     }
+
 }

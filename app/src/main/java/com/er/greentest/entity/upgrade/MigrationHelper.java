@@ -110,7 +110,7 @@ public class MigrationHelper {
             DaoConfig daoConfig = new DaoConfig(db, daoClasses[i]);
             String tableName = daoConfig.tablename;
             String tempTableName = daoConfig.tablename.concat("_TEMP");
-            ArrayList<String> properties = new ArrayList();
+            ArrayList<String> properties = new ArrayList<>();
 
             for (int j = 0; j < daoConfig.properties.length; j++) {
                 String columnName = daoConfig.properties[j].columnName;
