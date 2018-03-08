@@ -2,8 +2,10 @@ package com.er.greentest;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -32,13 +34,21 @@ public class RxActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rx);
-        comDisposable.dispose();
+//        comDisposable.dispose();
+        test();
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onRxClick(View view) {
         switch (view.getId()) {
             case R.id.normal:
-                test1();
+                test();
+//                test1();
                 break;
             case R.id.backpressure:
                 backPressureStrategy();
@@ -50,6 +60,46 @@ public class RxActivity extends AppCompatActivity {
                 zip();
                 break;
         }
+    }
+
+    public void test() {
+
+        Observable.just("hello...").map(new Function<String, Integer>() {
+            @Override
+            public Integer apply(String s) throws Exception {
+                Log.w("RX2", "---->>>>>>>>>>>>>>>>>apply："+Thread.currentThread());
+                Thread.sleep(6000);
+                return s.length();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.w("RX2", "---->>>>>>>>>>>>>>>>>onSubscribe "+Thread.currentThread());
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+//                        try {
+//                            Thread.sleep(6000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+                        Toast.makeText(RxActivity.this, "aaaaaaa", Toast.LENGTH_SHORT).show();
+                        Log.w("RX2", "---->>>>>>>>>>>>>>>>>onNext "+integer+" "+Thread.currentThread());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.w("RX2", "---->>>>>>>>>>>>>>>>>onError "+Thread.currentThread());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.w("RX2", "---->>>>>>>>>>>>>>>>>onComplete "+Thread.currentThread());
+                    }
+                });
     }
 
     private void test1() {
@@ -166,7 +216,7 @@ public class RxActivity extends AppCompatActivity {
         Observable<String> stringObservable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
-                Log.w("RX2", "·····················stringObservable "+ Thread.currentThread());
+                Log.w("RX2", "·····················stringObservable " + Thread.currentThread());
                 e.onNext("this is A");
                 e.onNext("this is B");
                 e.onNext("this is C");
@@ -175,35 +225,35 @@ public class RxActivity extends AppCompatActivity {
             }
         });
 
-        stringObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        Log.w("RX2", "·····················doOnNext accept：" + Thread.currentThread());
-                    }
-                })
-                .subscribe(new Observer<String>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        Log.w("RX2", "·····················Observer onSubscribe：" + Thread.currentThread());
-                    }
-
-                    @Override
-                    public void onNext(@NonNull String s) {
-                        Log.w("RX2", "·····················Observer onNext：" + Thread.currentThread());
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        Log.w("RX2", "·····················Observer onError：" + Thread.currentThread());
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.w("RX2", "·····················Observer onComplete：" + Thread.currentThread());
-                    }
-                });
+//        stringObservable.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .doOnNext(new Consumer<String>() {
+//                    @Override
+//                    public void accept(String s) throws Exception {
+//                        Log.w("RX2", "·····················doOnNext accept：" + Thread.currentThread());
+//                    }
+//                })
+//                .subscribe(new Observer<String>() {
+//                    @Override
+//                    public void onSubscribe(@NonNull Disposable d) {
+//                        Log.w("RX2", "·····················Observer onSubscribe：" + Thread.currentThread());
+//                    }
+//
+//                    @Override
+//                    public void onNext(@NonNull String s) {
+//                        Log.w("RX2", "·····················Observer onNext：" + Thread.currentThread());
+//                    }
+//
+//                    @Override
+//                    public void onError(@NonNull Throwable e) {
+//                        Log.w("RX2", "·····················Observer onError：" + Thread.currentThread());
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        Log.w("RX2", "·····················Observer onComplete：" + Thread.currentThread());
+//                    }
+//                });
 
 
 //        Observable.just(1, 2, 3, 4, 5, 6, 7).subscribeOn(Schedulers.io())
@@ -296,45 +346,83 @@ public class RxActivity extends AppCompatActivity {
 //            }
 //        });
 
+        Observable.just(1, 2, 3, 4, 5, 6, 7).map(new Function<Integer, String>() {
+            @Override
+            public String apply(@NonNull Integer integer) throws Exception {
+                Log.w("RX2", "·····················map:" + Thread.currentThread());
+                return "this is " + integer;
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        Log.w("RX2", "·····················doOnNext：" + Thread.currentThread());
+                    }
+                })
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        Log.w("RX2", "·····················onSubscribe：" + Thread.currentThread());
+                    }
 
-//        Observable.just(1, 2, 3, 4, 5, 6, 7).map(new Function<Integer, String>() {
-//            @Override
-//            public String apply(@NonNull Integer integer) throws Exception {
-//                Log.w("RX2", "·····················map:" + Thread.currentThread());
-//                return "this is " + integer;
-//            }
-//        }).subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .doOnNext(new Consumer<String>() {
-//                    @Override
-//                    public void accept(String s) throws Exception {
-//                        Log.w("RX2", "·····················doOnNext：" + Thread.currentThread());
-//                    }
-//                })
-//                .subscribe(new Observer<String>() {
-//                    @Override
-//                    public void onSubscribe(@NonNull Disposable d) {
-//                        Log.w("RX2", "·····················onSubscribe：" + Thread.currentThread());
-//                    }
-//
-//                    @Override
-//                    public void onNext(@NonNull String s) {
-//                        Log.w("RX2", "·····················onNext：" + Thread.currentThread());
-//                    }
-//
-//                    @Override
-//                    public void onError(@NonNull Throwable e) {
-//                        Log.w("RX2", "·····················onError：" + Thread.currentThread());
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        Log.w("RX2", "·····················onComplete：" + Thread.currentThread());
-//                    }
-//                });
-//    }
+                    @Override
+                    public void onNext(@NonNull String s) {
+                        Log.w("RX2", "·····················onNext：" + Thread.currentThread());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.w("RX2", "·····················onError：" + Thread.currentThread());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.w("RX2", "·····················onComplete：" + Thread.currentThread());
+                    }
+                });
 
 
+        Observable.just("")
+                .map(new Function<String, Integer>() {
+                    @Override
+                    public Integer apply(@NonNull String s) throws Exception {
+                        Log.w("RX2", "·····················map:" + Thread.currentThread());
+                        if (!TextUtils.isEmpty(s)) {
+                            return -1;
+                        } else {
+                            try {
+                                return Integer.parseInt(s);
+                            } catch (Exception e) {
+                                return -2;
+                            }
+                        }
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        Log.w("RX2", "·····················onSubscribe：" + Thread.currentThread());
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Integer i) {
+                        Log.w("RX2", "·····················onNext：" + Thread.currentThread());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.w("RX2", "·····················onError：" + Thread.currentThread());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.w("RX2", "·····················onComplete：" + Thread.currentThread());
+                    }
+                });
     }
 
 }

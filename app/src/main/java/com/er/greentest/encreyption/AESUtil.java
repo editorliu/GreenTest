@@ -54,7 +54,7 @@ public class AESUtil {
     }
 
     private static byte[] decryption(String words) {
-        byte[] decode = Base64.decode(words, Base64.DEFAULT);
+        byte[] decode = Base64.decode(words, Base64.CRLF);
         System.out.println("decode:" + new String(decode));
 
         IvParameterSpec ivParameterSpec = new IvParameterSpec(IV_PARAMETER);

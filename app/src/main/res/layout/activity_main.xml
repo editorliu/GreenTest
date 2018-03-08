@@ -10,7 +10,7 @@
     <com.er.greentest.view.MultiView
         android:layout_width="300dp"
         android:background="@color/colorPrimary"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_height="400dp" />
 
     <com.er.greentest.view.Blank
@@ -158,6 +158,64 @@
             android:onClick="onBtnClick"/>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bluetooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onBtnClick"
+            android:text="bluetooth" />
+
+        <Button
+            android:id="@+id/ble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onBtnClick"
+            android:text="ble" />
+
+        <Button
+            android:id="@+id/autoClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onBtnClick"
+            android:text="autoClick" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/nfc_foreground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onBtnClick"
+            android:text="nfc_foreground" />
+
+        <Button
+            android:id="@+id/webview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="webview"
+            android:onClick="onBtnClick"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/rsa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onBtnClick"
+        android:text="rsa" />
 
     <LinearLayout
         android:id="@+id/scrollTest"

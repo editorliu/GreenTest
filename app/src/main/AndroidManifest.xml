@@ -2,14 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.er.greentest">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-    <uses-feature android:name="android.hardware.touchscreen.multitouch"
-
-        android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.touchscreen.multitouch"
+        android:required="true" />
 
     <application
         android:name=".BaseApplication"
@@ -30,8 +40,7 @@
                 android:resource="@xml/path_fp" />
         </provider>
 
-        <activity
-            android:name=".MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -65,7 +74,57 @@
         </activity>
         <activity android:name=".RxActivity" />
         <activity android:name=".dagger2.DaggerTestActivity" />
-        <activity android:name=".dagger2.SecondActivity"></activity>
+        <activity android:name=".dagger2.SecondActivity" />
+        <activity android:name=".bluetooth.BluetoothActivity" />
+        <activity android:name=".ble.BleActivity" />
+        <activity
+            android:name=".nfc.NFCActivity"
+            android:launchMode="singleTop">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.nfc.action.NDEF_DISCOVERED" /> -->
+            <!-- <data android:mimeType="*/*"/> -->
+            <!-- </intent-filter> -->
+
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.nfc.action.NDEF_DISCOVERED" /> -->
+            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+            <!-- <data android:scheme="http" -->
+            <!-- android:host="news.baidu.com" -->
+            <!-- android:pathPrefix="/guonei"/> -->
+            <!-- </intent-filter> -->
+
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.nfc.action.NDEF_DISCOVERED" /> -->
+            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+            <!-- <data android:mimeType="application/vnd.com.example.android.beam" /> -->
+            <!-- </intent-filter> -->
+
+
+            <!-- <intent-filter> -->
+            <!-- <data android:scheme="vnd.android.nfc" -->
+            <!-- android:host="ext" -->
+            <!-- android:pathPrefix="/com.er.domain:externalType123"/> -->
+            <!-- </intent-filter> -->
+
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.nfc.action.TECH_DISCOVERED" /> -->
+            <!-- </intent-filter> -->
+
+
+            <!-- <meta-data -->
+            <!-- android:name="android.nfc.action.TECH_DISCOVERED" -->
+            <!-- android:resource="@xml/nfc_tech_filter" /> -->
+        </activity>
+        <activity android:name=".nfc.NFCForegroundActivity" />
+        <activity android:name=".wifi.WifiP2pActivity" />
+        <activity android:name=".AndroidActivity" />
+        <activity android:name=".auto.AutoActivity" />
+        <activity android:name=".auto.AutoJumpActivity" />
+        <activity android:name=".RsaActivity"></activity>
     </application>
 
 </manifest>
