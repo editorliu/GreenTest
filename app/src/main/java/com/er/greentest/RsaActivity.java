@@ -85,11 +85,12 @@ public class RsaActivity extends AppCompatActivity {
 //        }
 
 
-        String s = MD5Util.encryptSalt(data);
-        boolean b = MD5Util.verifySalt(data, s);
-        Log.w(TAG, "加盐加密：" + s+" 验证："+b);
+//        String s = MD5Util.encryptSalt(data);
+//        boolean b = MD5Util.verifySalt(data, s);
+//        Log.w(TAG, "加盐加密：" + s+" 验证："+b);
 
 
+        AesUtil.key("324");
     }
 
 

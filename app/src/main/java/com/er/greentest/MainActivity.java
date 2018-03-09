@@ -3,6 +3,7 @@ package com.er.greentest;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -109,6 +111,18 @@ public class MainActivity extends AppCompatActivity {
         isSupportMultiTouch();
 
         AESUtil.test();
+
+
+        ImageView imgEncrypt = (ImageView) findViewById(R.id.imgEncrypt);
+
+//        ImageCrypt.addByte(ImageCrypt.SOURCE_PATH);
+//        Bitmap bitmap = ImageCrypt.removeByte(ImageCrypt.BYTE_MIX_PATH);
+//        imgEncrypt.setImageBitmap(bitmap);
+
+        ImageCrypt.aesEncrypt(ImageCrypt.SOURCE_PATH);
+        Bitmap bitmap = ImageCrypt.aesDecrypt(ImageCrypt.AES_ENCRYPT_PATH);
+        imgEncrypt.setImageBitmap(bitmap);
+
     }
 
     public void isSupportMultiTouch() {
